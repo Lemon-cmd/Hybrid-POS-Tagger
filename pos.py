@@ -36,46 +36,73 @@ for i in range(size):
     corpus[0][i] = corpus[0][i].split()
     current = corpus[1][i]
     current_size = len(current)
-    for i in range (current_size):
-        if current[i] not in tags:
+    for c in range (current_size):
+        if current[c] not in tags:
             d = data()
-            tags[current[i]] = d 
-            tags[current[i]].count += 1
+            tags[current[c]] = d 
+            tags[current[c]].count += 1
         else:
-            tags[current[i]].count += 1
+            tags[current[c]].count += 1
 
-#grab transitions
+#grab transitions for tags
 for i in range(size):
     current = corpus[1][i]
     current_size = len(current)
-    for i in range (current_size):
-        if i != current_size - 1:
-            if current[i + 1] not in tags[current[i]].transitions:
+    for c in range (current_size):
+        if c != current_size - 1:
+            if current[c + 1] not in tags[current[c]].transitions:
                 item = pdata()
-                tags[current[i]].transitions[current[i + 1]] = item
-                tags[current[i]].transitions[current[i + 1]].count += 1
-                tags[current[i]].transitions[current[i + 1]].update(tags[current[i]].count)
+                tags[current[c]].transitions[current[c + 1]] = item
+                tags[current[c]].transitions[current[c + 1]].count += 1
+                tags[current[c]].transitions[current[c + 1]].update(tags[current[c]].count)
             else:
-                tags[current[i]].transitions[current[i + 1]].count += 1
-                tags[current[i]].transitions[current[i + 1]].update(tags[current[i]].count)
+                tags[current[c]].transitions[current[c + 1]].count += 1
+                tags[current[c]].transitions[current[c + 1]].update(tags[current[c]].count)
+
+#fill in lexicon
+lexicon = {}
+for i in range(size):
+    current = corpus[0][i]
+    current_size = len(current)
+    for c in range (current_size):
+        if current[c] not in lexicon:
+            d = data()
+            lexicon[current[c]] = d 
+            lexicon[current[c]].count += 1
+        else:
+            lexicon[current[c]].count += 1
+
+#grab transitions for lexicon
+for i in range(size):
+    sent = corpus[0][i]
+    tsent = corpus[1][i]
+    current_size = len(sent)
+    for c in range (current_size):
+        if c != current_size - 1:
+            if tsent[c] not in lexicon[sent[c]].transitions:
+                item = pdata()
+                lexicon[sent[c]].transitions[tsent[c]] = item
+                lexicon[sent[c]].transitions[tsent[c]].count += 1
+                lexicon[sent[c]].transitions[tsent[c]].update(lexicon[sent[c]].count)
+            else:
+                lexicon[sent[c]].transitions[tsent[c]].count += 1
+                lexicon[sent[c]].transitions[tsent[c]].update(lexicon[sent[c]].count)
 
 #best transition
-def bpath(transitions):
+def bpath(transition):
     item = [None, None]
-    for key in transitions:
+    for key in transition:
         if item[0] == None: 
             item[0] = key 
-            item[1] = transitions[key].probability
+            item[1] = transition[key].probability
         else:
-            if item[1] < transitions[key].probability:
+            if item[1] < transition[key].probability:
                 item[0] = key 
-                item[1] = transitions[key].probability  
+                item[1] = transition[key].probability  
 
     return item[0], item[1]
 
-test = ["rb"]
 
-for i in test:
-    print(bpath(tags[i].transitions))
+#limited word
 
-print(corpus[0][0][1], corpus[1][0][1])
+print(bpath(lexicon["ostracism"].transitions))
