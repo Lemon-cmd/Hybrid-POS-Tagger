@@ -24,5 +24,8 @@ Lastly, it is still using the Brown corpus as its training sample.
 The project is currently in ***development*** and a paper will be written in regards to it.
 
 The overall goal of this project is to successfully tag labeled inputs with > 70% accuracy.
+
+Current Accuracy = 43% 
+   - Adding Lexical Rules next
    
 ---
