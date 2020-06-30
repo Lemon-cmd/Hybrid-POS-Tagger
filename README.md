@@ -21,11 +21,11 @@ Lastly, it is still using the Brown corpus as its training sample.
 
 **Status** 
 ---
-The project is currently in ***development*** and a paper will be written in regards to it.
+The project is currently in ***development***
 
 The overall goal of this project is to successfully tag labeled inputs with > 70% accuracy.
 
-Current Accuracy = 43% 
-   - Adding Lexical Rules next
+Current Accuracy = 55% 
+   - Adding Rules for comparison between probabilities
    
 ---
